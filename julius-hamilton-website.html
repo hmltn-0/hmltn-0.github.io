@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Julius Hamilton</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
+            background-color: black;
+            color: white;
+        }
+        .container {
+            text-align: center;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        h1 {
+            margin-bottom: 2rem;
+        }
+        .triangle-container {
+            position: relative;
+            width: 300px;
+            height: 260px;
+            margin: 0 auto 50px;
+        }
+        .section {
+            position: absolute;
+            color: white;
+            cursor: pointer;
+            transition: color 0.3s;
+            white-space: nowrap;
+        }
+        .section:hover {
+            color: #ffd700;
+        }
+        .content-page {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            z-index: 10;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            background-color: transparent;
+            border: none;
+            padding: 10px;
+            color: white;
+            font-size: 16px;
+            transition: color 0.3s;
+        }
+        .back-button:hover {
+            color: #ffd700;
+        }
+        .back-button svg {
+            width: 24px;
+            height: 24px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            margin-right: 8px;
+        }
+        .page-title {
+            text-align: center;
+            padding-top: 50px;
+        }
+        .page-description {
+            text-align: center;
+            font-style: italic;
+            margin-top: 20px;
+        }
+        .hire-me {
+            margin-top: 30px;
+            font-weight: bold;
+            text-decoration: underline;
+            cursor: pointer;
+            color: white;
+            transition: color 0.3s;
+        }
+        .hire-me:hover {
+            color: #ffd700;
+        }
+    </style>
+</head>
+<body>
+    <div id="main-page" class="container">
+        <h1>Julius Hamilton</h1>
+        <div class="triangle-container">
+            <svg width="300" height="260" viewBox="0 0 300 260">
+                <polygon points="0,0 300,0 150,260" fill="none" stroke="white" stroke-width="2"/>
+            </svg>
+            <div id="logic" class="section">Logic</div>
+            <div id="entrepreneurship" class="section">Entrepreneurship</div>
+            <div id="filmmaking" class="section">Documentary Filmmaking</div>
+        </div>
+        <a href="mailto:?subject=Hire%20Julius%20Hamilton&body=Hey%20Julius%2C%0A%0AI'd%20like%20to%20hire%20you%20for%20the%20following%20task...%0A%0A%0ASincerely%2C%0A" class="hire-me">Hire Me</a>
+    </div>
+
+    <div id="content-page" class="content-page">
+        <button class="back-button" aria-label="Back to main page">
+            <svg viewBox="0 0 24 24">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            Back
+        </button>
+        <h2 class="page-title"></h2>
+        <p class="page-description"></p>
+    </div>
+
+    <script>
+        const sections = document.querySelectorAll('.section');
+        const triangle = document.querySelector('svg');
+        const mainPage = document.getElementById('main-page');
+        const contentPage = document.getElementById('content-page');
+        const backButton = document.querySelector('.back-button');
+        const pageTitle = document.querySelector('.page-title');
+        const pageDescription = document.querySelector('.page-description');
+
+        const pageContent = {
+            'Logic': 'Some things I am working on in logic.',
+            'Entrepreneurship': 'My entrepreneurship ideas.',
+            'Documentary Filmmaking': 'Some documentary filmmaking projects I am working on.'
+        };
+
+        function positionLabels() {
+            const rect = triangle.getBoundingClientRect();
+            const width = rect.width;
+            const height = rect.height;
+            const offset = 20;
+
+            const logic = document.getElementById('logic');
+            logic.style.left = `${-logic.offsetWidth / 2 - offset}px`;
+            logic.style.top = `${-logic.offsetHeight / 2 - offset}px`;
+
+            const entrepreneurship = document.getElementById('entrepreneurship');
+            entrepreneurship.style.right = `${-entrepreneurship.offsetWidth / 2 - offset}px`;
+            entrepreneurship.style.top = `${-entrepreneurship.offsetHeight / 2 - offset}px`;
+
+            const filmmaking = document.getElementById('filmmaking');
+            filmmaking.style.left = `${width / 2 - filmmaking.offsetWidth / 2}px`;
+            filmmaking.style.bottom = `${-filmmaking.offsetHeight - offset}px`;
+        }
+
+        function showContentPage(title) {
+            mainPage.style.display = 'none';
+            contentPage.style.display = 'block';
+            pageTitle.textContent = title;
+            pageDescription.textContent = pageContent[title];
+        }
+
+        function showMainPage() {
+            mainPage.style.display = 'block';
+            contentPage.style.display = 'none';
+        }
+
+        window.addEventListener('load', positionLabels);
+        window.addEventListener('resize', positionLabels);
+
+        sections.forEach(section => {
+            section.addEventListener('click', () => {
+                showContentPage(section.textContent);
+            });
+        });
+
+        backButton.addEventListener('click', showMainPage);
+    </script>
+</body>
+</html>
